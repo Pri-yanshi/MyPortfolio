@@ -21,9 +21,31 @@ const Contact = () =>{
     setFormValues({...formValues, [name]:value});
   }
 
-  const handleSubmit= (e)=>{
+  const handleSubmit= async(e)=>{
     e.preventDefault();
+    const{name, email, message} = formValues;
+    const res = await fetch("https://learn1-firebase-default-rtdb.firebaseio.com//userDb.json",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",},
+          body:JSON.stringify({
+            name, 
+            email, 
+            message
+          })
+        }
+        
+       );
     setFormError(validate(formValues));
+    if(res){
+      setFormValues({
+        name:'',
+        email:'', 
+        message:''
+      })
+      alert('Data stored successfully');
+      
+    }
   }
 
   const validate= (values)=>{
